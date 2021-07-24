@@ -2,7 +2,7 @@ import Card from '../card/Card';
 import styles from './FaceRecognition.module.css';
 import infoSVG from '../../assets/svg/info.svg';
 
-type BoxType = {
+export type BoxType = {
   topRow: string | number;
   rightCol: string | number;
   bottomRow: string | number;
@@ -11,10 +11,25 @@ type BoxType = {
 
 interface FaceRecognitionProps {
   imageUrl: string;
-  box: BoxType;
+  boxes: Array<BoxType> | [];
 }
 
-const FaceRecognition = ({ imageUrl, box }: FaceRecognitionProps) => {
+const FaceRecognition = ({ imageUrl, boxes }: FaceRecognitionProps) => {
+  const faceBoxes = boxes.map((box, i) => {
+    return (
+      <div
+        key={i}
+        className={styles['bounding-box']}
+        style={{
+          top: box.topRow,
+          right: box.rightCol,
+          bottom: box.bottomRow,
+          left: box.leftCol
+        }}
+      ></div>
+    );
+  });
+
   return (
     <Card>
       <div className="w-full">
@@ -37,17 +52,7 @@ const FaceRecognition = ({ imageUrl, box }: FaceRecognitionProps) => {
             />
           )}
 
-          {box.topRow !== 0 && (
-            <div
-              className={styles['bounding-box']}
-              style={{
-                top: box.topRow,
-                right: box.rightCol,
-                bottom: box.bottomRow,
-                left: box.leftCol
-              }}
-            ></div>
-          )}
+          {boxes.length > 0 && faceBoxes}
         </div>
       </div>
     </Card>

@@ -3,11 +3,22 @@ import { useHistory } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectUser, setEntries } from '../../store/userSlice';
 import Container from '../container/Container';
-import FaceRecognition from '../faceRecognition/FaceRecognition';
+import FaceRecognition, { BoxType } from '../faceRecognition/FaceRecognition';
 import ImageForm from '../imageForm/ImageForm';
 import { notify } from '../notification/notificationSlice';
 import Rank from '../rank/Rank';
 import { faceRecognition, updateEntry } from './HomeAPI';
+
+interface ClarifaiRegion {
+  region_info: {
+    bounding_box: {
+      left_col: number;
+      top_row: number;
+      right_col: number;
+      bottom_row: number;
+    };
+  };
+}
 
 const Home = () => {
   const history = useHistory();
@@ -18,30 +29,31 @@ const Home = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const boxInitialState = {
-    topRow: 0,
-    rightCol: 0,
-    bottomRow: 0,
-    leftCol: 0
-  };
-  const [box, setBox] = useState(boxInitialState);
+  const boxInitialState: Array<BoxType> = [];
 
-  const calculateFaceLocation = (data: any) => {
-    const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+  const [boxes, setBoxes] = useState(boxInitialState);
+
+  // Supports multiple face detection
+  const calculateFaceLocations = (data: any) => {
     const image = document.getElementById('inputimage');
+
     if (image && image instanceof HTMLElement) {
       const width = Number(image.offsetWidth);
       const height = Number(image.offsetHeight);
 
-      return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height
-      };
+      return data.outputs[0].data.regions.map((region: ClarifaiRegion) => {
+        const { left_col, top_row, right_col, bottom_row } =
+          region.region_info.bounding_box;
+
+        return {
+          leftCol: left_col * width,
+          topRow: top_row * height,
+          rightCol: width - right_col * width,
+          bottomRow: height - bottom_row * height
+        };
+      });
     }
-    return boxInitialState;
+    return [];
   };
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +66,7 @@ const Home = () => {
 
     const faceData = await faceRecognition(imageUrl);
     if (faceData) {
-      setBox(calculateFaceLocation(faceData));
+      setBoxes(calculateFaceLocations(faceData));
       const entryCount = await updateEntry(user.id);
       dispatch(setEntries(Number(entryCount)));
       dispatch(
@@ -82,7 +94,7 @@ const Home = () => {
       <article className="grid grid-flow-row md:grid-flow-col md:grid-cols-2 gap-6">
         <section>
           <Rank entries={user.entries} />
-          <FaceRecognition imageUrl={imageUrl} box={box} />
+          <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </section>
         <section>
           <ImageForm
