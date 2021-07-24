@@ -22,7 +22,7 @@
 
 ## Intro
 
-This application is developed base on the `smart-brain` application by `@Andrei Neagoie`. I have customized a lot of features in this application. Including the following:
+This application is developed base on the [smart-brain](https://github.com/aneagoie/smart-brain) application by `@Andrei Neagoie` on "[The Complete Junior to Senior Web Developer Roadmap](https://www.udemy.com/share/1013iu2@PkdKbFhaSVYNe0JAOGJOfg==/)" course. I have customized a lot of features in this application. Including the following:
 
 - Added `notification`
 - Whole application is written in `TypeScript`
@@ -42,3 +42,34 @@ This application is developed base on the `smart-brain` application by `@Andrei 
 ## Backend
 
 The backend of this application is in another repo [face-ai-api](https://github.com/TriDiamond/face-ai-api).
+
+## Development
+
+Clone the repo onto your local machine, then install all the dependencies:
+
+```shell
+npm install
+
+# or
+
+yarn install
+```
+
+To run the application run:
+
+```shell
+npm run start
+
+# or
+
+yarn start
+```
+
+> **Note**: For this application to work, you will need to also setup the [face-ai-api](https://github.com/TriDiamond/face-ai-api) backend.
+
+Last but not least, add a `.env` file in the root folder with the following content:
+
+```shell
+REACT_APP_API_URL=http://localhost:3030 # change this is your backend setup to a different port.
+REACT_APP_STORAGE_KEY=_faiu_eislfijsl # just a random string.
+```
