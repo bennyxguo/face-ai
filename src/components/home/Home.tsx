@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectUser, setEntries } from '../../store/userSlice';
+import { notify } from '../notification/notificationSlice';
+import { faceRecognition, updateEntry } from './HomeAPI';
 import Container from '../container/Container';
 import FaceRecognition, { BoxType } from '../faceRecognition/FaceRecognition';
 import ImageForm from '../imageForm/ImageForm';
-import { notify } from '../notification/notificationSlice';
 import Rank from '../rank/Rank';
-import { faceRecognition, updateEntry } from './HomeAPI';
 
 interface ClarifaiRegion {
   region_info: {
@@ -42,8 +42,7 @@ const Home = () => {
       const height = Number(image.offsetHeight);
 
       return data.outputs[0].data.regions.map((region: ClarifaiRegion) => {
-        const { left_col, top_row, right_col, bottom_row } =
-          region.region_info.bounding_box;
+        const { left_col, top_row, right_col, bottom_row } = region.region_info.bounding_box;
 
         return {
           leftCol: left_col * width,
@@ -97,11 +96,7 @@ const Home = () => {
           <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </section>
         <section>
-          <ImageForm
-            onInputChange={onInputChange}
-            onSubmit={onSubmit}
-            loading={loading}
-          />
+          <ImageForm onInputChange={onInputChange} onSubmit={onSubmit} loading={loading} />
         </section>
       </article>
     </Container>

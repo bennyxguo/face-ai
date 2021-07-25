@@ -24,7 +24,7 @@ const Container = (props: { children: JSX.Element | Array<JSX.Element> }) => {
   return (
     <article className="flex flex-col w-full min-h-screen">
       <Header onLogout={onLogout} />
-      <main className="container mx-auto px-6 md:px-48 py-10 flex-grow">
+      <main className="container mx-auto px-6 lg:px-30 xl:px-48 py-10 flex-grow">
         {props.children}
       </main>
       <Footer />

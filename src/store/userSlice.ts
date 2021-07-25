@@ -7,6 +7,7 @@ export interface UserState {
   id: number;
   name: string;
   email: string;
+  avatar: string;
   entries: number;
   createdAt: string;
 }
@@ -15,6 +16,7 @@ const defaultState = {
   id: 0,
   name: '',
   email: '',
+  avatar: '',
   entries: 0,
   createdAt: ''
 };
@@ -38,10 +40,11 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     loadUser: (state, action: PayloadAction<UserState>) => {
-      const { id, name, email, entries, createdAt } = action.payload;
+      const { id, name, email, avatar, entries, createdAt } = action.payload;
       state.id = id;
       state.name = name;
       state.email = email;
+      state.avatar = avatar;
       state.entries = entries;
       state.createdAt = createdAt;
       localStorage.setItem(storageKey, JSON.stringify(state));

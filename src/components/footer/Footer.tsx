@@ -1,7 +1,7 @@
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <footer className="ontainer px-6 md:px-48 mx-auto py-6 mt-auto">
+    <footer className="ontainer px-6 lg:px-30 xl:px-48 mx-auto py-6 mt-auto">
       <p className="text-gray-500">
         &copy; {year} | Powered by{' '}
         <a
