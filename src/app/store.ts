@@ -1,13 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import userReducer from '../store/userSlice';
+import userReducer from '../components/user/userSlice';
+import profileReducer from '../components/profile/profileSlice';
 import notificationReducer from '../components/notification/notificationSlice';
+
+// Using RTK Query
+// @see https://redux-toolkit.js.org/tutorials/rtk-query
+import { faceaiApi } from './services/faceaiApi';
+
+import { apiErrorHandler } from './middlewares/apiErrorHandler';
 
 export const store = configureStore({
   reducer: {
+    [faceaiApi.reducerPath]: faceaiApi.reducer,
     user: userReducer,
+    profile: profileReducer,
     notification: notificationReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiErrorHandler, faceaiApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

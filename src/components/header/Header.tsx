@@ -1,17 +1,25 @@
-import { useAppSelector } from '../../app/hooks';
-import { selectUser } from '../../store/userSlice';
-import Logo from '../logo/Logo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectUserId } from '../user/userSlice';
+import HeaderLogo from './HeaderLogo';
+import { toggleDisplay } from '../profile/profileSlice';
+import { useGetUserQuery } from '../../app/services/userApi';
 
 interface HeaderProps {
   onLogout: () => void;
 }
 
 const Header = ({ onLogout }: HeaderProps) => {
-  const user = useAppSelector(selectUser);
+  const dipatch = useAppDispatch();
+  const userId = useAppSelector(selectUserId);
+  const { data: user } = useGetUserQuery(userId);
+
+  const onProfileClick = () => {
+    dipatch(toggleDisplay());
+  };
 
   return (
     <header className="container px-6 lg:px-30 xl:px-48 mx-auto flex items-center mt-10">
-      <Logo />
+      <HeaderLogo />
       <ul className="flex flex-row gap-6">
         <li
           className="cursor-pointer border-b-2 border-gray-700 hover:border-purple-500"
@@ -24,9 +32,10 @@ const Header = ({ onLogout }: HeaderProps) => {
         </li>
       </ul>
       <img
-        className="hidden md:flex rounded-full bg-dark-secondary overflow-hidden w-10 ml-4 border-2 border-gray-700 hover:border-purple-500"
-        src={user.avatar}
+        className="cursor-pointer hidden md:flex rounded-full bg-dark-secondary overflow-hidden w-10 ml-4 border-2 border-gray-700 hover:border-purple-500"
+        src={user?.avatar}
         alt="avatar"
+        onClick={onProfileClick}
       />
     </header>
   );

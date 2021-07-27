@@ -27,6 +27,8 @@ This application is developed base on the [smart-brain](https://github.com/aneag
 - Added `notification`
 - Whole application is written in `TypeScript`
 - The `UI` is designed by TriDiamond with pure `TailwindCSS`
+- Refactored project structure into `application feature-based split`, more info see [here](https://www.pluralsight.com/guides/how-to-organize-your-react-+-redux-codebase).
+- Refactored API to use [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
 
 ## Packages Used
 

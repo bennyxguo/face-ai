@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { fetchRegister } from './RegisterAPI';
 import { useAppDispatch } from '../../app/hooks';
-import { loadUser } from '../../store/userSlice';
+import { setLogin } from '../user/userSlice';
 import { useHistory } from 'react-router-dom';
+import { notify } from '../notification/notificationSlice';
 import logo from '../../assets/svg/logo.svg';
 import illustration from '../../assets/svg/illustration.svg';
-import { notify } from '../notification/notificationSlice';
+import { usePrefetch, useRegisterUserMutation } from '../../app/services/userApi';
 
 const Signin = () => {
   const history = useHistory();
@@ -13,6 +13,8 @@ const Signin = () => {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [name, setName] = useState('');
+  const [registerUser] = useRegisterUserMutation();
+  const prefetchUser = usePrefetch('getUser');
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -27,13 +29,16 @@ const Signin = () => {
   };
 
   const onSubmitRegister = async () => {
-    const user = await fetchRegister({
+    const user = await registerUser({
       name,
       email: signInEmail,
       password: signInPassword
-    });
+    }).unwrap();
+
     if (user.id) {
-      dispatch(loadUser(user));
+      // Prefetching User info
+      prefetchUser(user.id);
+      dispatch(setLogin(user.id));
       dispatch(
         notify({
           message: `${user.name}, thanks for registering!`,
@@ -52,9 +57,7 @@ const Signin = () => {
             <div className="text-3xl">
               <img src={logo} alt="logo" />
             </div>
-            <div className="text-3xl text-purple-500 tracking-wide ml-2 font-semibold">
-              Face AI
-            </div>
+            <div className="text-3xl text-purple-500 tracking-wide ml-2 font-semibold">Face AI</div>
           </div>
         </div>
         <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
@@ -65,56 +68,48 @@ const Signin = () => {
             Register
           </h2>
           <div className="mt-12">
-            <form>
-              <div>
-                <div className="text-sm font-bold text-gray-600 tracking-wide">
-                  Name
-                </div>
-                <input
-                  className="bg-transparent w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
-                  type="text"
-                  placeholder="Enter your name"
-                  name="name"
-                  onChange={onNameChange}
-                />
+            <div>
+              <div className="text-sm font-bold text-gray-600 tracking-wide">Name</div>
+              <input
+                className="bg-transparent w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
+                type="text"
+                placeholder="Enter your name"
+                name="name"
+                onChange={onNameChange}
+              />
+            </div>
+            <div className="mt-8">
+              <div className="flex justify-between items-center">
+                <div className="text-sm font-bold text-gray-600 tracking-wide">Email Address</div>
               </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <div className="text-sm font-bold text-gray-600 tracking-wide">
-                    Email Address
-                  </div>
-                </div>
-                <input
-                  className="bg-dark-primary  w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
-                  type="text"
-                  placeholder="Enter your email address"
-                  name="email"
-                  onChange={onEmailChange}
-                />
+              <input
+                className="bg-dark-primary  w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
+                type="text"
+                placeholder="Enter your email address"
+                name="email"
+                onChange={onEmailChange}
+              />
+            </div>
+            <div className="mt-8">
+              <div className="flex justify-between items-center">
+                <div className="text-sm font-bold text-gray-600 tracking-wide">Password</div>
               </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <div className="text-sm font-bold text-gray-600 tracking-wide">
-                    Password
-                  </div>
-                </div>
-                <input
-                  className="bg-dark-primary w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
-                  type="password"
-                  placeholder="Enter your password"
-                  name="password"
-                  onChange={onPasswordChange}
-                />
-              </div>
-              <div className="mt-10">
-                <button
-                  className="bg-purple-500 text-gray-100 p-4 w-full rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg"
-                  onClick={onSubmitRegister}
-                >
-                  Register
-                </button>
-              </div>
-            </form>
+              <input
+                className="bg-dark-primary w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
+                type="password"
+                placeholder="Enter your password"
+                name="password"
+                onChange={onPasswordChange}
+              />
+            </div>
+            <div className="mt-10">
+              <button
+                className="bg-purple-500 text-gray-100 p-4 w-full rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg"
+                onClick={onSubmitRegister}
+              >
+                Register
+              </button>
+            </div>
             <div className="mt-12 text-sm font-display font-semibold text-gray-600 text-center">
               Already have an account ?{' '}
               <button

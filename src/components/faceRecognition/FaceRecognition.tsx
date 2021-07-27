@@ -1,4 +1,4 @@
-import Card from '../card/Card';
+import Card from '../common/Card';
 import styles from './FaceRecognition.module.css';
 import infoSVG from '../../assets/svg/info.svg';
 
@@ -36,8 +36,8 @@ const FaceRecognition = ({ imageUrl, boxes }: FaceRecognitionProps) => {
         <h2 className="flex justify-center text-purple-300">
           <img src={infoSVG} alt="info-icon" />
           <span>
-            Fill in the <strong className="text-purple-500">image url</strong>,
-            image will be displayed here.
+            Fill in the <strong className="text-purple-500">image url</strong>, image will be
+            displayed here.
           </span>
         </h2>
         <div className="flex justify-center relative">

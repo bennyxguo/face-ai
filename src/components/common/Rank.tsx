@@ -1,5 +1,5 @@
 import entriesSVG from '../../assets/svg/entries.svg';
-import Card from '../card/Card';
+import Card from './Card';
 
 const Rank = ({ entries }: { entries: number }) => {
   return (

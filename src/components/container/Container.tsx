@@ -1,24 +1,33 @@
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectUser, unloadUser } from '../../store/userSlice';
+import { selectUserId, setLogout } from '../user/userSlice';
+import { selectProfileDisplay, toggleDisplay } from '../profile/profileSlice';
+import { notify } from '../notification/notificationSlice';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-import { notify } from '../notification/notificationSlice';
+import Profile from '../profile/Profile';
+import { useGetUserQuery } from '../../app/services/userApi';
 
 const Container = (props: { children: JSX.Element | Array<JSX.Element> }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
+  const userId = useAppSelector(selectUserId);
   const history = useHistory();
+  const displayProfile = useAppSelector(selectProfileDisplay);
+  const { data: user } = useGetUserQuery(userId);
 
   const onLogout = () => {
     dispatch(
       notify({
-        message: `👋 Goodbye ${user.name}!`,
+        message: `👋 Goodbye ${user?.name}!`,
         type: 'INFO'
       })
     );
-    dispatch(unloadUser());
+    dispatch(setLogout());
     history.push('/signin');
+  };
+
+  const toggleProfileDisplay = () => {
+    dispatch(toggleDisplay());
   };
 
   return (
@@ -28,6 +37,7 @@ const Container = (props: { children: JSX.Element | Array<JSX.Element> }) => {
         {props.children}
       </main>
       <Footer />
+      {displayProfile && <Profile toggleDisplay={toggleProfileDisplay} />}
     </article>
   );
 };

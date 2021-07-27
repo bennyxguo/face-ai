@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { fetchSignin } from './SigninAPI';
 import { useAppDispatch } from '../../app/hooks';
-import { loadUser } from '../../store/userSlice';
+import { setLogin } from '../user/userSlice';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/svg/logo.svg';
 import illustration from '../../assets/svg/illustration.svg';
 import { notify } from '../notification/notificationSlice';
+import { usePrefetch, useSigninUserMutation } from '../../app/services/userApi';
 
 const Signin = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [singinUser] = useSigninUserMutation();
+  const prefetchUser = usePrefetch('getUser');
 
   const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSignInEmail(event.target.value);
@@ -22,20 +24,22 @@ const Signin = () => {
   };
 
   const onSubmitSignIn = async () => {
-    const user = await fetchSignin({
+    // Unwrapping will get the result of the mutation immediately
+    const user = await singinUser({
       email: signInEmail,
       password: signInPassword
-    });
-    if (user.id) {
-      dispatch(loadUser(user));
-      dispatch(
-        notify({
-          message: `Welcome back, ${user.name}`,
-          type: 'SUCCESS'
-        })
-      );
-      history.push('/');
-    }
+    }).unwrap();
+
+    // Prefetching User info
+    prefetchUser(user.id);
+    dispatch(setLogin(user.id));
+    dispatch(
+      notify({
+        message: `Welcome back, ${user.name}`,
+        type: 'SUCCESS'
+      })
+    );
+    history.push('/');
   };
 
   return (
@@ -46,9 +50,7 @@ const Signin = () => {
             <div className="text-3xl">
               <img src={logo} alt="logo" />
             </div>
-            <div className="text-3xl text-purple-500 tracking-wide ml-2 font-semibold">
-              Face AI
-            </div>
+            <div className="text-3xl text-purple-500 tracking-wide ml-2 font-semibold">Face AI</div>
           </div>
         </div>
         <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
@@ -60,9 +62,7 @@ const Signin = () => {
           </h2>
           <div className="mt-12">
             <div>
-              <div className="text-sm font-bold text-gray-600 tracking-wide">
-                Email Address
-              </div>
+              <div className="text-sm font-bold text-gray-600 tracking-wide">Email Address</div>
               <input
                 className="bg-transparent w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"
                 type="text"
@@ -73,17 +73,7 @@ const Signin = () => {
             </div>
             <div className="mt-8">
               <div className="flex justify-between items-center">
-                <div className="text-sm font-bold text-gray-600 tracking-wide">
-                  Password
-                </div>
-                {/* <div>
-                    <a
-                      href="/#"
-                      className="text-xs font-display font-semibold text-purple-600 hover:text-purple-800 cursor-pointer"
-                    >
-                      Forgot Password?
-                    </a>
-                  </div> */}
+                <div className="text-sm font-bold text-gray-600 tracking-wide">Password</div>
               </div>
               <input
                 className="bg-transparent  w-full text-lg py-2 border-b border-gray-700 focus:outline-none focus:border-purple-500"

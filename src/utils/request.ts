@@ -3,7 +3,7 @@ import { store } from '../app/store';
 import { notify } from '../components/notification/notificationSlice';
 
 const request = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3000',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3030',
   headers: { 'Content-Type': 'application/json' }
 });
 

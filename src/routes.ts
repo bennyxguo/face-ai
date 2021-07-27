@@ -1,6 +1,6 @@
-import Home from '../components/home/Home';
-import Signin from '../components/signin/Signin';
-import Register from '../components/register/Register';
+import Home from './components/home-page/Home';
+import Signin from './components/user-page/Signin';
+import Register from './components/user-page/Register';
 
 export type RouteConfig = {
   path: string;

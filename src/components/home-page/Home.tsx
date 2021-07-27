@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectUser, setEntries } from '../../store/userSlice';
+import { selectUserId, selectLogin } from '../user/userSlice';
 import { notify } from '../notification/notificationSlice';
-import { faceRecognition, updateEntry } from './HomeAPI';
 import Container from '../container/Container';
 import FaceRecognition, { BoxType } from '../faceRecognition/FaceRecognition';
 import ImageForm from '../imageForm/ImageForm';
-import Rank from '../rank/Rank';
+import Rank from '../common/Rank';
+import { useFaceRecognitionMutation, useUpdateEntryMutation } from '../../app/services/imageApi';
+import { useGetUserQuery } from '../../app/services/userApi';
 
 interface ClarifaiRegion {
   region_info: {
@@ -23,15 +24,19 @@ interface ClarifaiRegion {
 const Home = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
-  if (user.name === '') history.push('/signin');
+  const userId = useAppSelector(selectUserId);
+  const isLogin = useAppSelector(selectLogin);
+  const { data: user } = useGetUserQuery(userId);
+  if (!isLogin) history.push('/signin');
 
   const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
 
   const boxInitialState: Array<BoxType> = [];
-
   const [boxes, setBoxes] = useState(boxInitialState);
+
+  const [faceRecognition] = useFaceRecognitionMutation();
+  const [updateEntry] = useUpdateEntryMutation();
 
   // Supports multiple face detection
   const calculateFaceLocations = (data: any) => {
@@ -63,17 +68,17 @@ const Home = () => {
     if (imageUrl === '' || loading === true) return;
     setLoading(true);
 
-    const faceData = await faceRecognition(imageUrl);
-    if (faceData) {
+    const faceData = await faceRecognition({ imageUrl }).unwrap();
+    if (user && faceData) {
       setBoxes(calculateFaceLocations(faceData));
-      const entryCount = await updateEntry(user.id);
-      dispatch(setEntries(Number(entryCount)));
+      await updateEntry({ id: user.id, current: user.entries }).unwrap();
       dispatch(
         notify({
           message: 'Face Recognition successed!',
           type: 'SUCCESS'
         })
       );
+      // dispatch(userEndpoints.getUser.initiate(user.id, { subscribe: false, forceRefetch: true }));
     } else {
       dispatch(
         notify({
@@ -88,11 +93,11 @@ const Home = () => {
   return (
     <Container>
       <h1 className="mt-8 mb-6 text-purple-500 text-4xl">
-        Welcome back, <strong>{user.name}</strong>!
+        Welcome back, <strong>{user?.name}</strong>!
       </h1>
       <article className="grid grid-flow-row md:grid-flow-col md:grid-cols-2 gap-6">
         <section>
-          <Rank entries={user.entries} />
+          <Rank entries={user ? user.entries : 0} />
           <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </section>
         <section>

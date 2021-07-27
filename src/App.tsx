@@ -1,9 +1,9 @@
 import { Provider } from 'react-redux';
-import { store } from '../../app/store';
+import { store } from './app/store';
 import { Route, Switch } from 'react-router-dom';
-import appRoutes, { RouteConfig } from '../../routes';
+import appRoutes, { RouteConfig } from './routes';
 import Particles from 'react-particles-js';
-import Notification from '../notification/Notification';
+import Notification from './components/notification/Notification';
 
 // Sub-routes
 const RouteWithSubRoutes = (route: RouteConfig) => {
