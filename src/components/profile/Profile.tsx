@@ -10,6 +10,7 @@ import usePortal from '../../hooks/usePortal';
 import './Profile.css';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { notify } from '../notification/notificationSlice';
+import LoadingButton from '../common/LoadingButton';
 
 type CallbackFunc = () => void;
 type InputMap = {
@@ -26,7 +27,7 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
     age: '',
     hobby: ''
   });
-  const [storeUser] = useStoreUserMutation();
+  const [storeUser, { isLoading }] = useStoreUserMutation();
   const [getUser] = useLazyGetUserQuery();
 
   const onChangeInput = (input: string, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,12 +117,14 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
         />
       </div>
       <div className="flex justify-evenly">
-        <button
-          className="bg-purple-500 text-gray-100 p-2 w-1/3 rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg"
-          onClick={onSubmit}
-        >
-          Save
-        </button>
+        <div className="mr-4 w-full">
+          <LoadingButton
+            text="Save"
+            loadingText="Saving..."
+            loading={isLoading}
+            onClick={onSubmit}
+          />
+        </div>
         <button
           className="bg-gray-500 text-gray-100 p-2 w-1/3 rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-gray-600 shadow-lg"
           onClick={toggleDisplay}

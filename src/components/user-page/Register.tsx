@@ -6,6 +6,7 @@ import { notify } from '../notification/notificationSlice';
 import logo from '../../assets/svg/logo.svg';
 import illustration from '../../assets/svg/illustration.svg';
 import { usePrefetch, useRegisterUserMutation } from '../../app/services/userApi';
+import LoadingButton from '../common/LoadingButton';
 
 const Signin = () => {
   const history = useHistory();
@@ -13,7 +14,7 @@ const Signin = () => {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [name, setName] = useState('');
-  const [registerUser] = useRegisterUserMutation();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   const prefetchUser = usePrefetch('getUser');
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,12 +104,12 @@ const Signin = () => {
               />
             </div>
             <div className="mt-10">
-              <button
-                className="bg-purple-500 text-gray-100 p-4 w-full rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg"
+              <LoadingButton
+                text="Log In"
+                loadingText="Registering..."
+                loading={isLoading}
                 onClick={onSubmitRegister}
-              >
-                Register
-              </button>
+              />
             </div>
             <div className="mt-12 text-sm font-display font-semibold text-gray-600 text-center">
               Already have an account ?{' '}

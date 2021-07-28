@@ -30,12 +30,11 @@ const Home = () => {
   if (!isLogin) history.push('/signin');
 
   const [imageUrl, setImageUrl] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const boxInitialState: Array<BoxType> = [];
   const [boxes, setBoxes] = useState(boxInitialState);
 
-  const [faceRecognition] = useFaceRecognitionMutation();
+  const [faceRecognition, { isLoading }] = useFaceRecognitionMutation();
   const [updateEntry] = useUpdateEntryMutation();
 
   // Supports multiple face detection
@@ -65,8 +64,7 @@ const Home = () => {
   };
 
   const onSubmit = async () => {
-    if (imageUrl === '' || loading === true) return;
-    setLoading(true);
+    if (imageUrl === '' || isLoading === true) return;
 
     const faceData = await faceRecognition({ imageUrl }).unwrap();
     if (user && faceData) {
@@ -87,7 +85,6 @@ const Home = () => {
         })
       );
     }
-    setLoading(false);
   };
 
   return (
@@ -101,7 +98,7 @@ const Home = () => {
           <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </section>
         <section>
-          <ImageForm onInputChange={onInputChange} onSubmit={onSubmit} loading={loading} />
+          <ImageForm onInputChange={onInputChange} onSubmit={onSubmit} loading={isLoading} />
         </section>
       </article>
     </Container>

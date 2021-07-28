@@ -6,13 +6,14 @@ import logo from '../../assets/svg/logo.svg';
 import illustration from '../../assets/svg/illustration.svg';
 import { notify } from '../notification/notificationSlice';
 import { usePrefetch, useSigninUserMutation } from '../../app/services/userApi';
+import LoadingButton from '../common/LoadingButton';
 
 const Signin = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
-  const [singinUser] = useSigninUserMutation();
+  const [singinUser, { isLoading }] = useSigninUserMutation();
   const prefetchUser = usePrefetch('getUser');
 
   const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,12 +85,12 @@ const Signin = () => {
               />
             </div>
             <div className="mt-10">
-              <button
-                className="bg-purple-500 text-gray-100 p-4 w-full rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg"
+              <LoadingButton
+                text="Log In"
+                loadingText="Logging in..."
+                loading={isLoading}
                 onClick={onSubmitSignIn}
-              >
-                Log In
-              </button>
+              />
             </div>
             <div className="mt-12 text-sm font-display font-semibold text-gray-600 text-center">
               Don't have an account ?{' '}

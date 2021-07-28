@@ -1,8 +1,7 @@
 import Card from '../common/Card';
 import infoSVG from '../../assets/svg/info.svg';
 import React from 'react';
-import loadingSVG from '../../assets/svg/loading.svg';
-import classNames from 'classnames';
+import LoadingButton from '../common/LoadingButton';
 
 export type onInputChangeFunc = (event: React.ChangeEvent<HTMLInputElement>) => void;
 
@@ -15,14 +14,6 @@ interface ImageFormProps {
 }
 
 const ImageForm = ({ onInputChange, onSubmit, loading }: ImageFormProps) => {
-  const buttonClass = classNames(
-    'bg-purple-500 text-gray-100 p-4 w-full rounded-2xl tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-purple-600 shadow-lg flex justify-center items-center',
-    {
-      'opacity-50': loading,
-      'cursor-not-allowed': loading
-    }
-  );
-
   return (
     <Card>
       <div className="flex flex-col w-full">
@@ -44,13 +35,12 @@ const ImageForm = ({ onInputChange, onSubmit, loading }: ImageFormProps) => {
           />
         </div>
         <div className="mt-10">
-          <button className={buttonClass} onClick={onSubmit}>
-            {loading === true && (
-              <img className="animate-spin mr-2" src={loadingSVG} alt="loading" width="16" />
-            )}
-
-            {loading === true ? 'Detecting...' : 'Detect'}
-          </button>
+          <LoadingButton
+            text="Detect"
+            loadingText="Detecting..."
+            onClick={onSubmit}
+            loading={loading}
+          />
         </div>
       </div>
     </Card>
