@@ -71,7 +71,9 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
           alt="avatar"
         />
         <div className="">
-          <h1 className="text-purple-500 text-4xl">{user?.name}</h1>
+          <h1 className="text-purple-500 text-4xl">
+            {formInput.name !== '' ? formInput.name : user?.name}
+          </h1>
           <h2 className="text-gray-400 text-xl">{user?.email}</h2>
         </div>
       </div>
