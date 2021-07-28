@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { setLogin } from '../user/userSlice';
+import { signToken } from '../user/userSlice';
 import { useHistory } from 'react-router-dom';
 import { notify } from '../notification/notificationSlice';
 import logo from '../../assets/svg/logo.svg';
@@ -30,19 +30,19 @@ const Signin = () => {
   };
 
   const onSubmitRegister = async () => {
-    const user = await registerUser({
+    const authToken = await registerUser({
       name,
       email: signInEmail,
       password: signInPassword
     }).unwrap();
 
-    if (user.id) {
+    if (authToken.token) {
       // Prefetching User info
-      prefetchUser(user.id);
-      dispatch(setLogin(user.id));
+      dispatch(signToken(authToken.token));
+      prefetchUser();
       dispatch(
         notify({
-          message: `${user.name}, thanks for registering!`,
+          message: `Thanks for registering!`,
           type: 'SUCCESS'
         })
       );

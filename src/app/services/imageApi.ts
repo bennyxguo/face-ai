@@ -20,17 +20,17 @@ export interface ClarifaiData {
 
 export const imageApi = faceaiApi.injectEndpoints({
   endpoints: (build) => ({
-    updateEntry: build.mutation<number, { id: number; current: number }>({
+    updateEntry: build.mutation<number, { current: number }>({
       query: (body) => ({
         url: '/image/updateEntry',
         method: 'PUT',
         body
       }),
-      async onQueryStarted({ id, current }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ current }, { dispatch, queryFulfilled }) {
         // Updating the cached user entries
         // Save one user info API fetch
         const patchResult = dispatch(
-          userApi.util.updateQueryData('getUser', id, (draft) => {
+          userApi.util.updateQueryData('getUser', void 0, (draft) => {
             Object.assign(draft, { entries: current + 1 });
           })
         );

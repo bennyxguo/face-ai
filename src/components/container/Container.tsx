@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectUserId, setLogout } from '../user/userSlice';
+import { revokeToken } from '../user/userSlice';
 import { selectProfileDisplay, toggleDisplay } from '../profile/profileSlice';
 import { notify } from '../notification/notificationSlice';
 import Footer from '../footer/Footer';
@@ -10,10 +10,9 @@ import { useGetUserQuery } from '../../app/services/userApi';
 
 const Container = (props: { children: JSX.Element | Array<JSX.Element> }) => {
   const dispatch = useAppDispatch();
-  const userId = useAppSelector(selectUserId);
   const history = useHistory();
   const displayProfile = useAppSelector(selectProfileDisplay);
-  const { data: user } = useGetUserQuery(userId);
+  const { data: user } = useGetUserQuery();
 
   const onLogout = () => {
     dispatch(
@@ -22,7 +21,7 @@ const Container = (props: { children: JSX.Element | Array<JSX.Element> }) => {
         type: 'INFO'
       })
     );
-    dispatch(setLogout());
+    dispatch(revokeToken());
     history.push('/signin');
   };
 

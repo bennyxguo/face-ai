@@ -1,5 +1,11 @@
 import { faceaiApi } from './faceaiApi';
 
+export interface AutToken {
+  success: boolean;
+  userId: number;
+  token: string;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -13,26 +19,26 @@ export interface User {
 
 export const userApi = faceaiApi.injectEndpoints({
   endpoints: (build) => ({
-    getUser: build.query<User, number>({
-      query: (id) => `/user/${id}`
+    getUser: build.query<User, void>({
+      query: () => `/user`
     }),
-    registerUser: build.mutation<User, { name: string; email: string; password: string }>({
+    registerUser: build.mutation<AutToken, { name: string; email: string; password: string }>({
       query: (body) => ({
         url: '/register',
         method: 'POST',
         body
       })
     }),
-    signinUser: build.mutation<User, { email: string; password: string }>({
+    signinUser: build.mutation<AutToken, { email: string; password: string }>({
       query: (body) => ({
         url: '/login',
         method: 'POST',
         body
       })
     }),
-    storeUser: build.mutation<User, Pick<User, 'id'> & Partial<User>>({
+    storeUser: build.mutation<User, Partial<User>>({
       query: (body) => ({
-        url: `/user/${body.id}`,
+        url: `/user`,
         method: 'PUT',
         body
       }),
@@ -40,7 +46,7 @@ export const userApi = faceaiApi.injectEndpoints({
         // Updating the cached user data
         // Save one user info API fetch
         const patchResult = dispatch(
-          userApi.util.updateQueryData('getUser', body.id, (draft) => {
+          userApi.util.updateQueryData('getUser', void 0, (draft) => {
             Object.assign(draft, body);
           })
         );

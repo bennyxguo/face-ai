@@ -5,10 +5,9 @@ import {
   useLazyGetUserQuery,
   useStoreUserMutation
 } from '../../app/services/userApi';
-import { selectUserId } from '../user/userSlice';
 import usePortal from '../../hooks/usePortal';
 import './Profile.css';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { notify } from '../notification/notificationSlice';
 import LoadingButton from '../common/LoadingButton';
 
@@ -18,8 +17,7 @@ type InputMap = {
 };
 
 const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
-  const userId = useAppSelector(selectUserId);
-  const { data: user } = useGetUserQuery(userId);
+  const { data: user } = useGetUserQuery();
   const dispatch = useAppDispatch();
   const target = usePortal('profile-root');
   const [formInput, setFormInput] = useState<InputMap>({
@@ -59,7 +57,7 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
       })
     );
 
-    getUser(user.id);
+    getUser();
   };
 
   const ProfileElem = (

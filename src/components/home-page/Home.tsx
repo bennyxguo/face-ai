@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectUserId, selectLogin } from '../user/userSlice';
+import { selectToken } from '../user/userSlice';
 import { notify } from '../notification/notificationSlice';
 import Container from '../container/Container';
 import FaceRecognition, { BoxType } from '../faceRecognition/FaceRecognition';
@@ -24,10 +24,9 @@ interface ClarifaiRegion {
 const Home = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const userId = useAppSelector(selectUserId);
-  const isLogin = useAppSelector(selectLogin);
-  const { data: user } = useGetUserQuery(userId);
-  if (!isLogin) history.push('/signin');
+  const authToken = useAppSelector(selectToken);
+  const { data: user } = useGetUserQuery();
+  if (!authToken) history.push('/signin');
 
   const [imageUrl, setImageUrl] = useState('');
 
@@ -69,7 +68,7 @@ const Home = () => {
     const faceData = await faceRecognition({ imageUrl }).unwrap();
     if (user && faceData) {
       setBoxes(calculateFaceLocations(faceData));
-      await updateEntry({ id: user.id, current: user.entries }).unwrap();
+      await updateEntry({ current: user.entries }).unwrap();
       dispatch(
         notify({
           message: 'Face Recognition successed!',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { setLogin } from '../user/userSlice';
+import { signToken } from '../user/userSlice';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/svg/logo.svg';
 import illustration from '../../assets/svg/illustration.svg';
@@ -26,21 +26,23 @@ const Signin = () => {
 
   const onSubmitSignIn = async () => {
     // Unwrapping will get the result of the mutation immediately
-    const user = await singinUser({
+    const authToken = await singinUser({
       email: signInEmail,
       password: signInPassword
     }).unwrap();
 
     // Prefetching User info
-    prefetchUser(user.id);
-    dispatch(setLogin(user.id));
-    dispatch(
-      notify({
-        message: `Welcome back, ${user.name}`,
-        type: 'SUCCESS'
-      })
-    );
-    history.push('/');
+    if (authToken.token) {
+      dispatch(signToken(authToken.token));
+      prefetchUser();
+      dispatch(
+        notify({
+          message: `Welcome back!`,
+          type: 'SUCCESS'
+        })
+      );
+      history.push('/');
+    }
   };
 
   return (

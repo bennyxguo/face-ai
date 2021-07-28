@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectUserId } from '../user/userSlice';
+import { useAppDispatch } from '../../app/hooks';
 import HeaderLogo from './HeaderLogo';
 import { toggleDisplay } from '../profile/profileSlice';
 import { useGetUserQuery } from '../../app/services/userApi';
@@ -10,8 +9,7 @@ interface HeaderProps {
 
 const Header = ({ onLogout }: HeaderProps) => {
   const dipatch = useAppDispatch();
-  const userId = useAppSelector(selectUserId);
-  const { data: user } = useGetUserQuery(userId);
+  const { data: user } = useGetUserQuery();
 
   const onProfileClick = () => {
     dipatch(toggleDisplay());
