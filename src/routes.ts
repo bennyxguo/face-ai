@@ -7,14 +7,10 @@ export type RouteConfig = {
   component: (props: any) => JSX.Element;
   exact?: boolean;
   routes?: Array<RouteConfig>;
+  isAuth?: boolean;
 };
 
 const routes: Array<RouteConfig> = [
-  {
-    path: '/',
-    exact: true,
-    component: Home
-  },
   {
     path: '/signin',
     component: Signin
@@ -22,6 +18,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/register',
     component: Register
+  },
+  {
+    path: '/',
+    exact: true,
+    isAuth: true,
+    component: Home
   }
 ];
 

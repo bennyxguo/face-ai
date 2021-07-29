@@ -1,9 +1,10 @@
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import { Route, Switch } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import appRoutes, { RouteConfig } from './routes';
 import Particles from 'react-particles-js';
 import Notification from './components/notification/Notification';
+import { useAppSelector } from './app/hooks';
+import { selectToken } from './components/user/userSlice';
 
 // Sub-routes
 const RouteWithSubRoutes = (route: RouteConfig) => {
@@ -14,6 +15,23 @@ const RouteWithSubRoutes = (route: RouteConfig) => {
         // pass the sub-routes down to keep nesting
         <route.component {...props} routes={route.routes || []} />
       )}
+    />
+  );
+};
+
+const ProtectedSubRoutes = (route: RouteConfig) => {
+  const authToken = useAppSelector(selectToken);
+  return (
+    <Route
+      path={route.path}
+      render={(props) =>
+        authToken ? (
+          // pass the sub-routes down to keep nesting
+          <route.component {...props} routes={route.routes || []} />
+        ) : (
+          <Redirect to={{ pathname: '/signin' }} />
+        )
+      }
     />
   );
 };
@@ -32,16 +50,29 @@ function App() {
     }
   };
 
+  const authToken = useAppSelector(selectToken);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!authToken) {
+      history.push('/signin');
+    }
+  }, [authToken, history]);
+
   return (
-    <Provider store={store}>
+    <>
       <Notification />
       <Particles className="particles" params={particlesOptions} />
       <Switch>
         {appRoutes.map((route, i) => {
-          return <RouteWithSubRoutes key={i} {...route} />;
+          if (!route.isAuth) {
+            return <RouteWithSubRoutes key={i} {...route} />;
+          } else {
+            return <ProtectedSubRoutes key={i} {...route} />;
+          }
         })}
       </Switch>
-    </Provider>
+    </>
   );
 }
 

@@ -39,7 +39,7 @@ const Signin = () => {
     if (authToken.token) {
       // Prefetching User info
       dispatch(signToken(authToken.token));
-      prefetchUser();
+      prefetchUser(void 0, { force: true });
       dispatch(
         notify({
           message: `Thanks for registering!`,

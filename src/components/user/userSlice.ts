@@ -29,7 +29,7 @@ export const userSlice = createSlice({
       localStorage.setItem(storageKey, state.token);
     },
     revokeToken: (state) => {
-      Object.assign(state, defaultState);
+      state.token = '';
       localStorage.removeItem(storageKey);
     }
   }

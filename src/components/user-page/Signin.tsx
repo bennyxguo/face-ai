@@ -34,7 +34,7 @@ const Signin = () => {
     // Prefetching User info
     if (authToken.token) {
       dispatch(signToken(authToken.token));
-      prefetchUser();
+      prefetchUser(void 0, { force: true });
       dispatch(
         notify({
           message: `Welcome back!`,
