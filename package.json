@@ -50,6 +50,8 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.8",
     "autoprefixer": "^9",
+    "jest-canvas-mock": "^2.3.1",
+    "msw": "^0.33.1",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }

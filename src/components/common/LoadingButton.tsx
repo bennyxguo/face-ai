@@ -20,7 +20,7 @@ const LoadingButton = ({ text, loadingText, loading, onClick }: LoadingButtonPro
   );
 
   return (
-    <button className={buttonClass} onClick={onClick}>
+    <button className={buttonClass} onClick={onClick} data-testid="submit">
       {loading === true && (
         <img className="animate-spin mr-2" src={loadingSVG} alt="loading" width="16" />
       )}

@@ -36,18 +36,16 @@ const Signin = () => {
       password: signInPassword
     }).unwrap();
 
-    if (authToken.token) {
-      // Prefetching User info
-      dispatch(signToken(authToken.token));
-      prefetchUser(void 0, { force: true });
-      dispatch(
-        notify({
-          message: `Thanks for registering!`,
-          type: 'SUCCESS'
-        })
-      );
-      history.push('/');
-    }
+    // Prefetching User info
+    dispatch(signToken(authToken.token));
+    prefetchUser(void 0, { force: true });
+    dispatch(
+      notify({
+        message: `Thanks for registering!`,
+        type: 'SUCCESS'
+      })
+    );
+    history.push('/');
   };
 
   return (
@@ -77,6 +75,7 @@ const Signin = () => {
                 placeholder="Enter your name"
                 name="name"
                 onChange={onNameChange}
+                data-testid="name"
               />
             </div>
             <div className="mt-8">
@@ -89,6 +88,7 @@ const Signin = () => {
                 placeholder="Enter your email address"
                 name="email"
                 onChange={onEmailChange}
+                data-testid="email"
               />
             </div>
             <div className="mt-8">
@@ -101,11 +101,12 @@ const Signin = () => {
                 placeholder="Enter your password"
                 name="password"
                 onChange={onPasswordChange}
+                data-testid="password"
               />
             </div>
             <div className="mt-10">
               <LoadingButton
-                text="Log In"
+                text="Register"
                 loadingText="Registering..."
                 loading={isLoading}
                 onClick={onSubmitRegister}

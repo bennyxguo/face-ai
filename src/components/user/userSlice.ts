@@ -11,8 +11,8 @@ const defaultState: UserState = {
   token: ''
 };
 
-const getStoredState = (): UserState => {
-  let state = defaultState;
+export const getStoredState = (): UserState => {
+  let state = Object.assign({}, defaultState);
   const storedState = localStorage.getItem(storageKey);
   if (storedState) Object.assign(state, { token: storedState });
   return state;

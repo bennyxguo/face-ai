@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import appRoutes, { RouteConfig } from './routes';
 import Particles from 'react-particles-js';
 import Notification from './components/notification/Notification';
@@ -49,15 +48,6 @@ function App() {
       }
     }
   };
-
-  const authToken = useAppSelector(selectToken);
-  const history = useHistory();
-
-  useEffect(() => {
-    if (!authToken) {
-      history.push('/signin');
-    }
-  }, [authToken, history]);
 
   return (
     <>

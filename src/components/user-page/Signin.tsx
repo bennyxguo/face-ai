@@ -25,24 +25,22 @@ const Signin = () => {
   };
 
   const onSubmitSignIn = async () => {
-    // Unwrapping will get the result of the mutation immediately
+    // Unwrap will get the result of the mutation immediately
     const authToken = await singinUser({
       email: signInEmail,
       password: signInPassword
     }).unwrap();
 
     // Prefetching User info
-    if (authToken.token) {
-      dispatch(signToken(authToken.token));
-      prefetchUser(void 0, { force: true });
-      dispatch(
-        notify({
-          message: `Welcome back!`,
-          type: 'SUCCESS'
-        })
-      );
-      history.push('/');
-    }
+    dispatch(signToken(authToken.token));
+    prefetchUser(void 0, { force: true });
+    dispatch(
+      notify({
+        message: `Welcome back!`,
+        type: 'SUCCESS'
+      })
+    );
+    history.push('/');
   };
 
   return (
@@ -72,6 +70,7 @@ const Signin = () => {
                 placeholder="Enter your email address"
                 name="email"
                 onChange={onEmailChange}
+                data-testid="email"
               />
             </div>
             <div className="mt-8">
@@ -84,6 +83,7 @@ const Signin = () => {
                 placeholder="Enter your password"
                 name="password"
                 onChange={onPasswordChange}
+                data-testid="password"
               />
             </div>
             <div className="mt-10">
