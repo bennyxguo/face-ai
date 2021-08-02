@@ -38,13 +38,14 @@ const Home = () => {
 
   // Supports multiple face detection
   const calculateFaceLocations = (data: any) => {
+    let box = [];
     const image = document.getElementById('inputimage');
 
     if (image && image instanceof HTMLElement) {
       const width = Number(image.offsetWidth);
       const height = Number(image.offsetHeight);
 
-      return data.outputs[0].data.regions.map((region: ClarifaiRegion) => {
+      box = data.outputs[0].data.regions.map((region: ClarifaiRegion) => {
         const { left_col, top_row, right_col, bottom_row } = region.region_info.bounding_box;
 
         return {
@@ -55,7 +56,8 @@ const Home = () => {
         };
       });
     }
-    return [];
+
+    return box;
   };
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

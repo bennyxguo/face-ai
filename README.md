@@ -14,8 +14,7 @@
   <img src="https://img.shields.io/github/forks/TriDiamond/face-ai">
   <img src="https://img.shields.io/github/issues/TriDiamond/face-ai">
   <img src="https://img.shields.io/github/last-commit/TriDiamond/face-ai/main">
-  <img src="https://img.shields.io/github/license/TriDiamond/face-ai">
-  <!-- <img src="https://img.shields.io/circleci/build/github/TriDiamond/face-ai/main"> -->
+  <img src="https://img.shields.io/circleci/build/github/TriDiamond/face-ai/main">
 </p>
 
 ![screenshot-1](https://res.cloudinary.com/tridiamond/image/upload/v1627134984/github%20images/screenshot-1_bnm51h.png)

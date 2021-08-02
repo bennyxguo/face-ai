@@ -2,6 +2,15 @@
   "name": "face-ai",
   "version": "0.1.0",
   "private": true,
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/app/services",
+      "<rootDir>/src/index.tsx",
+      "<rootDir>/src/reportWebVitals.ts"
+    ]
+  },
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@reduxjs/toolkit": "^1.6.1",
@@ -27,7 +36,8 @@
     "start": "TAILWIND_MODE=watch craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "codecov": "CODECOV_TOKEN='1f3391ba-7cf7-4852-b10e-db0655e56549' codecov"
   },
   "eslintConfig": {
     "extends": [

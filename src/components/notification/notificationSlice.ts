@@ -25,10 +25,7 @@ export const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    notify: (
-      state,
-      action: PayloadAction<{ message: string; type: NotificationType }>
-    ) => {
+    notify: (state, action: PayloadAction<{ message: string; type: NotificationType }>) => {
       const { message, type } = action.payload;
       state.display = true;
       state.message = message;

@@ -29,16 +29,14 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
   const [getUser] = useLazyGetUserQuery();
 
   const onChangeInput = (input: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event) {
-      setFormInput({
-        ...formInput,
-        [input]: event.target.value
-      });
-    }
+    setFormInput({
+      ...formInput,
+      [input]: event.target.value
+    });
   };
 
   const onSubmit = async () => {
-    if (!user?.id) return;
+    // if (!user?.id) return;
     let data: InputMap = {};
     for (let key in formInput) {
       if (formInput[key] !== '') {
@@ -46,7 +44,7 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
       }
     }
     await storeUser({
-      id: user.id,
+      id: user?.id,
       ...data
     });
 
@@ -94,6 +92,7 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
           placeholder={user?.name}
           name="name"
           onChange={(e) => onChangeInput('name', e)}
+          aria-label="input-name"
         />
       </div>
       <div className="mb-4">
@@ -104,6 +103,8 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
           placeholder={user?.age || 'Enter your age'}
           name="age"
           onChange={(e) => onChangeInput('age', e)}
+          data-testid="age"
+          aria-label="input-age"
         />
       </div>
       <div className="mb-6">
@@ -114,6 +115,8 @@ const Profile = ({ toggleDisplay }: { toggleDisplay: CallbackFunc }) => {
           placeholder={user?.hobby || 'Enter your hobby'}
           name="hobby"
           onChange={(e) => onChangeInput('hobby', e)}
+          data-testid="hobby"
+          aria-label="input-hobby"
         />
       </div>
       <div className="flex justify-evenly">

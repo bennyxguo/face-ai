@@ -26,6 +26,7 @@ const FaceRecognition = ({ imageUrl, boxes }: FaceRecognitionProps) => {
           bottom: box.bottomRow,
           left: box.leftCol
         }}
+        data-testid="face-box"
       ></div>
     );
   });

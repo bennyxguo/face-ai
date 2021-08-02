@@ -27,7 +27,7 @@ describe('App component', () => {
     renderWithRouter(<App />, { route: '/' });
 
     await waitFor(() => {
-      expect(screen.getByText('TriDiamond')).toBeInTheDocument();
+      expect(screen.getByText('Test_User')).toBeInTheDocument();
     });
   });
 

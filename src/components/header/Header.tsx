@@ -22,6 +22,7 @@ const Header = ({ onLogout }: HeaderProps) => {
         <li
           className="cursor-pointer border-b-2 border-gray-700 hover:border-purple-500"
           onClick={onLogout}
+          data-testid="logout-btn"
         >
           Logout
         </li>

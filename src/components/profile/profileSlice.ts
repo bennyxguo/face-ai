@@ -15,14 +15,11 @@ const profileSlice = createSlice({
   reducers: {
     toggleDisplay: (state) => {
       state.open = !state.open;
-    },
-    closeProfile: (state) => {
-      state.open = false;
     }
   }
 });
 
-export const { toggleDisplay, closeProfile } = profileSlice.actions;
+export const { toggleDisplay } = profileSlice.actions;
 export const selectProfileDisplay = (state: RootState) => state.profile.open;
 
 export default profileSlice.reducer;
