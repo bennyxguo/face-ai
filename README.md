@@ -15,6 +15,9 @@
   <img src="https://img.shields.io/github/issues/TriDiamond/face-ai">
   <img src="https://img.shields.io/github/last-commit/TriDiamond/face-ai/main">
   <img src="https://img.shields.io/circleci/build/github/TriDiamond/face-ai/main">
+  <a href="https://codecov.io/gh/TriDiamond/face-ai">
+    <img src="https://img.shields.io/codecov/c/gh/TriDiamond/face-ai?logo=codecov&token=GHR7PHHWQI"/>
+  </a>
 </p>
 
 ![screenshot-1](https://res.cloudinary.com/tridiamond/image/upload/v1627134984/github%20images/screenshot-1_bnm51h.png)
