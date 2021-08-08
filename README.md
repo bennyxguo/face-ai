@@ -10,13 +10,13 @@
 <br/>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/TriDiamond/face-ai">
-  <img src="https://img.shields.io/github/forks/TriDiamond/face-ai">
-  <img src="https://img.shields.io/github/issues/TriDiamond/face-ai">
-  <img src="https://img.shields.io/github/last-commit/TriDiamond/face-ai/main">
-  <img src="https://img.shields.io/circleci/build/github/TriDiamond/face-ai/main">
-  <a href="https://codecov.io/gh/TriDiamond/face-ai">
-    <img src="https://img.shields.io/codecov/c/gh/TriDiamond/face-ai?logo=codecov&token=GHR7PHHWQI"/>
+  <img src="https://img.shields.io/github/stars/bennyxguo/face-ai">
+  <img src="https://img.shields.io/github/forks/bennyxguo/face-ai">
+  <img src="https://img.shields.io/github/issues/bennyxguo/face-ai">
+  <img src="https://img.shields.io/github/last-commit/bennyxguo/face-ai/main">
+  <img src="https://img.shields.io/circleci/build/github/bennyxguo/face-ai/main">
+  <a href="https://codecov.io/gh/bennyxguo/face-ai">
+    <img src="https://img.shields.io/codecov/c/gh/bennyxguo/face-ai?logo=codecov&token=GHR7PHHWQI"/>
   </a>
 </p>
 

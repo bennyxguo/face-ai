@@ -36,7 +36,8 @@
     "start": "TAILWIND_MODE=watch craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "codecov": "CODECOV_TOKEN='1f3391ba-7cf7-4852-b10e-db0655e56549' codecov"
   },
   "eslintConfig": {
     "extends": [
