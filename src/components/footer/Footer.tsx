@@ -13,9 +13,9 @@ const Footer = () => {
         | Crafted with ♥︎ by{' '}
         <a
           className="border-b-2 border-purple-500 text-purple-500 hover:opacity-60"
-          href="https://github.com/TriDiamond"
+          href="https://github.com/bennyxguo"
         >
-          TriDiamond
+          Benny Guo
         </a>{' '}
       </p>
     </footer>
